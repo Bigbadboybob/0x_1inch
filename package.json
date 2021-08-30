@@ -1,0 +1,29 @@
+{
+  "name": "flashloan-box",
+  "description": "A truffle box containing all you need to get started with developing flash loans",
+  "version": "1.0.0",
+  "license": "AGPLv3",
+  "author": "Aave",
+  "contributors": [
+    "David Truong <david@aave.com>"
+  ],
+  "homepage": "https://docs.aave.com/developers/tutorials/performing-a-flash-loan/...-with-truffle",
+  "repository": "https://github.com/aave/flashloan-box",
+  "dependencies": {
+    "@ethersproject/address": "^5.4.0",
+    "@ethersproject/contracts": "^5.4.0",
+    "@ethersproject/networks": "^5.4.1",
+    "@ethersproject/providers": "^5.4.1",
+    "@ethersproject/solidity": "^5.4.0",
+    "@openzeppelin/contracts": "^4.2.0",
+    "@uniswap/sdk": "^3.0.3",
+    "console.table": "^0.10.0",
+    "ganache-core": "^2.13.2",
+    "moment-timezone": "^0.5.33"
+  },
+  "devDependencies": {
+    "@truffle/hdwallet-provider": "^1.0.36",
+    "dotenv": "^8.2.0",
+    "truffle": "^5.1.32"
+  }
+}
