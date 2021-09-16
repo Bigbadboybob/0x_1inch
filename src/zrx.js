@@ -103,12 +103,16 @@ function getSorted(takerToken, makerToken) {
 
 const USDG = '0xf906997808f73b09c1007b98ab539b189282b192'
 const OWN = '0xcC6F15Be8573cB8243C42d300565566D328213Dd'
+
 /*
-getSorted(SAI, OWN).then( orders => {
+getSorted(WETH, DAI).then( orders => {
     console.log(orders.length)
-    console.log(orders[0])
+    for (let i = 0; i < 10; i++) {
+        console.log(orders[i])
+    }
 })
 */
+
 
 
 

@@ -20,38 +20,25 @@ const web3 = new Web3(process.env.RPC_URL)
 const ganache = require("ganache-core")
 let accounts = ['0x2E076fB19B3Ee8F55480E0654eD573DadF8cb16d']
 
-const config = require('./config')
+//const config = require('./config')
+const {
+    DAI, WETH, USDC, USDT, WBTC, LINK, MKR, CRV, MANA, UNI, ZRX, AAVE,
+    YFI, BAT, BUSD, ENJ, KNC, REN, SNX, sUSD, TUSD, GUSD, BAL, xSUSHI, renFIL, RAI, AMPL, USDP, DPI, FRAX,
+    prices,
+    names,
+    tokenDecimals,
+    zeroAddress,
+    ZRX_EXCHANGE_ADDRESS, ZRX_EXCHANGE_ABI,
+    FILL_ORDER_ABI,
+    INCH_ROUTER_ADDRESS,
+    ARBITRAGE_ADDRESS, ARBITRAGE_ABI,
+    ERC20_ABI,
+    ADDRESS_PROVIDER_ADDRESS, ADDRESS_PROVIDER_ABI,
+} = require('./config')
 
-const DAI = config.DAI
-const WETH = config.WETH
-const USDC = config.USDC
-const SAI = config.SAI
-const USDT = config.USDT
-const WBTC = config.WBTC
-const LINK = config.LINK
-const MKR = config.MKR
-const CRV = config.CRV
-const MANA = config.MANA
-const UNI = config.UNI
-const ZRX = config.ZRX
-const COMP = config.COMP
-const AAVE = config.AAVE
-
-const prices = config.prices
-const names = config.names
-const tokenDecimals = config.tokenDecimals
-const zeroAddress = config.zeroAddress
-
-const ZRX_EXCHANGE_ADDRESS = config.ZRX_EXCHANGE_ADDRESS
-const ZRX_EXCHANGE_ABI = config.ZRX_EXCHANGE_ABI
 const zrxExchangeContract = new web3.eth.Contract(ZRX_EXCHANGE_ABI, ZRX_EXCHANGE_ADDRESS)
-const FILL_ORDER_ABI = config.FILL_ORDER_ABI
 
-const ARBITRAGE_ABI = config.ARBITRAGE_ABI
-const ARBITRAGE_ADDRESS = config.ARBITRAGE_ADDRESS
 const DyDxSoloMargin = new web3.eth.Contract(ARBITRAGE_ABI, ARBITRAGE_ADDRESS)
-
-const ERC20_ABI = config.ERC20_ABI
 
 const now = () => (moment().tz('America/New_York').format())
 
@@ -98,7 +85,7 @@ function checkArb(takerToken, makerToken, gasPrice) {
             let makerAmount1 = takerAmount1.mul(web3.utils.toBN(zrxOrder['makerAssetAmount'])).div(web3.utils.toBN(zrxOrder['takerAssetAmount']).add(web3.utils.toBN(zrxOrder['takerFee'])))
 
             //TODO: change address to contract
-            let inchQuote = await inch.getSwap(makerToken, takerToken, makerAmount1, config.ARBITRAGE_ADDRESS)
+            let inchQuote = await inch.getSwap(makerToken, takerToken, makerAmount1, ARBITRAGE_ADDRESS)
             //TODO: maybe use etherGasStation
             let gas = web3.utils.toBN(String(inchQuote['tx']['gasPrice'])) //in wei
             //let gas = web3.utils.toWei(String(gasPrice), "gwei") //in wei
@@ -127,16 +114,18 @@ function checkArb(takerToken, makerToken, gasPrice) {
                 profit = true;
                 console.log(Date.now()/1000)
                 var timeDiff = zrxOrder.expirationTimeSeconds - Math.round(Date.now()/1000)
-                //TODO: change expiration
-                if (timeDiff <= 0){
+                if (timeDiff <= 25){
                     console.log('--------')
                     console.log('EXPIRED')
                     console.log('--------')
                     console.log(zrxOrder.expirationTimeSeconds)
+                } else if (transaction) {
+                    console.log('--------')
+                    console.log('TRANSACTION IN PROGRESS')
+                    console.log('--------')
                 } else {
                     //clearInterval(mainInterval)
                     console.log(zrxOrder)
-                    //console.log(inchQuote)
                     let outLog = names[takerToken] + '->' + names[makerToken] + '->' + names[takerToken]
                     console.log(outLog)
                     console.log([takerAmount2/takerAmount1,
@@ -147,8 +136,8 @@ function checkArb(takerToken, makerToken, gasPrice) {
                     ])
                     console.log('EXECUTING TRADE!!')
                     //arbInterval = false
-                    let receipt = await executeTrade(takerToken, makerToken, takerAmount1, zrxOrder, inchQuote, takerAmount2Slip.toString(), gas,
-                        timeDiff, expectedReturn.toNumber()/1000000, expectedProfit.toNumber()/1000000) 
+                    //let receipt = await executeTrade(takerToken, makerToken, takerAmount1, zrxOrder, inchQuote, takerAmount2Slip.toString(), gas,
+                    //    timeDiff, expectedReturn.toNumber()/1000000, expectedProfit.toNumber()/1000000) 
                     /*
                     if (!arbInterval) {
                         arbInterval = true
@@ -201,13 +190,9 @@ async function executeTrade(takerToken, makerToken, takerAmount1, zrxOrder, inch
     }))
     web3.eth.getAccounts((err, res) => accounts = res)
 
-    //TODO: get fill order abi
     const data = web3.eth.abi.encodeFunctionCall(FILL_ORDER_ABI, [orderTuple, takerAmount1, signature])
     const inchData = inchSwap.tx.data
 
-    //TODO: deploy smart contract and initialize and export in config
-    //TODO: change to send()
-    
     let execute = false
     console.log('transaction:', transaction)
     if (!transaction) {
@@ -225,6 +210,7 @@ async function executeTrade(takerToken, makerToken, takerAmount1, zrxOrder, inch
             })
 
         if (execute) {
+            clearInterval(mainInterval)
             console.log('EXECUTING')
             const tx = await DyDxSoloMargin.methods.initiateFlashLoan(takerToken, takerAmount1, makerToken, data, inchData).send({
                 from: accounts[0], value: gPrice.mul(new web3.utils.toBN(String(140000))), gas: 2000000, gasPrice: gPrice
@@ -243,13 +229,18 @@ async function executeTrade(takerToken, makerToken, takerAmount1, zrxOrder, inch
             console.log('Balance:', bal)
             var trade
             if (bal > 0) {
-                trade = [true, bal, expectedProfit, timeDiff, names[takerToken], names[makerToken], expectedReturn]
+                trade = [true, bal, expectedProfit, timeDiff, Date.now()/1000, names[takerToken], names[makerToken], expectedReturn]
             } else {
-                trade = [false, bal, expectedProfit, timeDiff, names[takerToken], names[makerToken], expectedReturn]
+                trade = [false, bal, expectedProfit, timeDiff, Date.now()/1000, names[takerToken], names[makerToken], expectedReturn]
             }
             trades.push(trade)
+            fs.appendFile('src/logs/trades.txt', JSON.stringify(trade) + '\n', err => {
+                if (err != null) {
+                    console.log(err)
+                }
+            })
             transaction = false
-            clearInterval(mainInterval)
+            mainInterval = setInterval(arbChecks, 3000)
             return 'EXECUTED'
         } else {
             transaction = false
@@ -284,18 +275,26 @@ let profits = {
     USDCWETH: 0,
     WETHUSDC: 0,
     WETHWBTC: 0,
-    WETHLINK: 0,
-    USDCWBTC: 0,
-    DAIUSDC: 0,
-    DAIUSDT: 0,
-    USDCDAI: 0
+    WETHLIN: 0,
+    MKRWETH: 0,
+    UNIWETH: 0,
+    ZRXWETH: 0,
+    AAVEWETH: 0,
+    YFIWETH: 0,
+    ENJWETH: 0,
+    WETHMKR: 0,
+    WETHUNI: 0,
+    WETHZRX: 0,
+    WETHAAVE: 0,
+    WETHYFI: 0,
+    WETHENJ: 0,
 }
 let time = 0;
 
 let updateGas = true
 setInterval( () => {
     updateGas = true
-}, 20000)
+}, 6000)
 
 let gasJSON
 async function call() {
@@ -321,14 +320,15 @@ async function call() {
 
 
 const arbChecks = async () => {
-    /*
     if (updateGas) {
-        gasJSON = await getGas()
-        gasPrice = JSON.parse(gasJSON)['result']['ProposeGasPrice'] * 2 //need really FAST transaction?
+        getGas().then(gasJSON => {
+            gasPrice = JSON.parse(gasJSON)['result']['FastGasPrice']
+            gasPrice = parseInt(gasPrice) + 10
+        })
         updateGas = false
     }
-    */
     if (arbInterval) {
+        /*
         checkArb(DAI, WETH, gasPrice).then(res => {
             console.log(res)
             if (res[4]) {
@@ -378,61 +378,122 @@ const arbChecks = async () => {
         }).catch(error => {
             console.log(error)
         })
-        /*
-        checkArb(USDC, WBTC, gasPrice).then(res => {
-            console.log(res)
-            if (res[4]) {
-                profits['USDCWBTC']++
-            }
-        }).catch(error => {
-            console.log(error)
-        })
-        checkArb(DAI, USDC, gasPrice).then(res => {
-            console.log(res)
-            if (res[4]) {
-                profits['DAIUSDC']++
-            }
-        }).catch(error => {
-            console.log(error)
-        })
-        checkArb(USDC, DAI, gasPrice).then(res => {
-            console.log(res)
-            if (res[4]) {
-                profits['USDCDAI']++
-            }
-        }).catch(error => {
-            console.log(error)
-        })
         */
+        
+
+        checkArb(MKR, WETH, gasPrice).then(res => {
+            console.log(res)
+            if (res[4]) {
+                profits['MKRWETH']++
+            }
+        }).catch(error => {
+            console.log(error)
+        })
+        checkArb(UNI, WETH, gasPrice).then(res => {
+            console.log(res)
+            if (res[4]) {
+                profits['UNIWETH']++
+            }
+        }).catch(error => {
+            console.log(error)
+        })
+        checkArb(ZRX, WETH, gasPrice).then(res => {
+            console.log(res)
+            if (res[4]) {
+                profits['ZRXWETH']++
+            }
+        }).catch(error => {
+            console.log(error)
+        })
+        checkArb(AAVE, WETH, gasPrice).then(res => {
+            console.log(res)
+            if (res[4]) {
+                profits['AAVEWETH']++
+            }
+        }).catch(error => {
+            console.log(error)
+        })
+        checkArb(YFI, WETH, gasPrice).then(res => {
+            console.log(res)
+            if (res[4]) {
+                profits['YFIWETH']++
+            }
+        }).catch(error => {
+            console.log(error)
+        })
+        checkArb(ENJ, WETH, gasPrice).then(res => {
+            console.log(res)
+            if (res[4]) {
+                profits['ENJWETH']++
+            }
+        }).catch(error => {
+            console.log(error)
+        })
+
+        
+        checkArb(WETH, MKR, gasPrice).then(res => {
+            console.log(res)
+            if (res[4]) {
+                profits['WETHMKR']++
+            }
+        }).catch(error => {
+            console.log(error)
+        })
+        checkArb(WETH, UNI, gasPrice).then(res => {
+            console.log(res)
+            if (res[4]) {
+                profits['WETHUNI']++
+            }
+        }).catch(error => {
+            console.log(error)
+        })
+        checkArb(WETH, ZRX, gasPrice).then(res => {
+            console.log(res)
+            if (res[4]) {
+                profits['WETHZRX']++
+            }
+        }).catch(error => {
+            console.log(error)
+        })
+        checkArb(WETH, AAVE, gasPrice).then(res => {
+            console.log(res)
+            if (res[4]) {
+                profits['WETHAAVE']++
+            }
+        }).catch(error => {
+            console.log(error)
+        })
+        checkArb(WETH, YFI, gasPrice).then(res => {
+            console.log(res)
+            if (res[4]) {
+                profits['WETHYFI']++
+            }
+        }).catch(error => {
+            console.log(error)
+        })
+        checkArb(WETH, ENJ, gasPrice).then(res => {
+            console.log(res)
+            if (res[4]) {
+                profits['WETHENJ']++
+            }
+        }).catch(error => {
+            console.log(error)
+        })
         
         time++
         if (time >= 200) {
             console.log(profits)
             console.log(trades)
             fs.writeFile('src/logs/profits.txt', JSON.stringify(profits), err => console.log(err))
-            fs.writeFile('src/logs/trades.txt', '', err => {
-                if (err != null) {
-                    console.log(err)
-                }
-            })
-            for (var i = 0; i < trades.length; i++) {
-                var trade = trades[i]
-                fs.appendFile('src/logs/trades.txt', JSON.stringify(trade) + '\n', err => {
-                    if (err != null) {
-                        console.log(err)
-                    }
-                })
-            }
             console.log(transaction)
+            transaction = false
             time = 0
         }
     }
 }
 
-var mainInterval = setInterval(arbChecks, 1000)
+var mainInterval = setInterval(arbChecks, 2000)
 var arbInterval = true
 var transaction = false
 
 
-
-//bytes memory data = abi.encode(flashToken, flashAmount, balanceBefore, arbToken, zrxData, oneSplitMinReturn, oneSplitDistribution);

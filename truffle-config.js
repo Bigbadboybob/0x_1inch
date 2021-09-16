@@ -9,7 +9,7 @@ module.exports = {
 	networks: {
 	  development: {
 	    host: "127.0.0.1",
-	    port: 8545,
+	    port: 7545,
 	    // gas: 20000000,
 	    network_id: "*",
 	    skipDryRun: true
@@ -37,7 +37,7 @@ module.exports = {
 	},
 	compilers: {
 		solc: {
-			version: "^0.8.7",
+			version: "^0.6.12",
 		},
 	},
 }

@@ -1,7 +1,6 @@
 const DAI = '0x6b175474e89094c44da98b954eedeac495271d0f'
 const WETH = '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
 const USDC = '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'
-const SAI = '0x89d24A6b4CcB1B6fAA2625fE562bDD9a23260359'
 const USDT = '0xdAC17F958D2ee523a2206206994597C13D831ec7'
 const WBTC = '0x2260fac5e5542a773aa44fbcfedf7c193bc2c599'
 const LINK = '0x514910771af9ca656af840dff83e8264ecf986ca'
@@ -10,15 +9,34 @@ const CRV = '0xD533a949740bb3306d119CC777fa900bA034cd52'
 const MANA = '0x0f5d2fb29fb7d3cfee444a200298f468908cc942'
 const UNI = '0x1f9840a85d5af5bf1d1762f925bdaddc4201f984'
 const ZRX = '0xe41d2489571d322189246dafa5ebde1f4699f498'
-const COMP = '0xc00e94cb662c3520282e6f5717214004a7f26888'
 const AAVE = '0x7Fc66500c84A76Ad7e9c93437bFc5Ac33E2DDaE9'
+
+const YFI = '0x0bc529c00C6401aEF6D220BE8C6Ea1667F6Ad93e'
+const BAT = '0x0D8775F648430679A709E98d2b0Cb6250d2887EF'
+const BUSD = '0x4Fabb145d64652a948d72533023f6E7A623C7C53'
+const ENJ = '0xF629cBd94d3791C9250152BD8dfBDF380E2a3B9c'
+const KNC = '0xdd974D5C2e2928deA5F71b9825b8b646686BD2oc00'
+const REN = '0x408e41876cCCDC0F92210600ef50372656052a38'
+const SNX = '0xC011a73ee8576Fb46F5E1c5751cA3B9Fe0af2a6F'
+const sUSD = '0x57Ab1ec28D129707052df4dF418D58a2D46d5f51'
+const TUSD = '0x0000000000085d4780B73119b644AE5ecd22b376'
+const GUSD = '0x056Fd409E1d7A124BD7017459dFEa2F387b6d5Cd'
+const BAL = '0xba100000625a3754423978a60c9317c58a424e3D'
+const xSUSHI = '0x8798249c2E607446EfB7Ad49eC89dD1865Ff4272'
+const renFIL = '0xD5147bc8e386d91Cc5DBE72099DAC6C9b99276F5'
+const RAI = '0x03ab458634910AaD20eF5f1C8ee96F1D6ac54919'
+const AMPL = '0xD46bA6D942050d489DBd938a2C909A5d5039A161'
+const USDP = '0x8E870D67F660D95d5be530380D0eC0bd388289E1'
+const DPI = '0x1494CA1F11D487c2bBe4543E90080AeBa4BA3C2b'
+const FRAX = '0x853d955aCEf822Db058eb8505911ED77F175b99e'
+
 //estimate for converting fees
 const prices = {
     '0x6b175474e89094c44da98b954eedeac495271d0f': 1, //DAI
     '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48': 1, //USDC
     '0xdAC17F958D2ee523a2206206994597C13D831ec7': 1, //USDT
     '0x89d24A6b4CcB1B6fAA2625fE562bDD9a23260359': 16, //SAI
-    '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2': 3200, //WETH
+    '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2': 3400, //WETH
     '0x2260fac5e5542a773aa44fbcfedf7c193bc2c599': 47000, //WBTC
     '0x514910771af9ca656af840dff83e8264ecf986ca': 27, //LINK
     '0x9f8f72aa9304c8b593d555f12ef6589cc3a579a2': 2500, //MKR
@@ -27,7 +45,26 @@ const prices = {
     '0x1f9840a85d5af5bf1d1762f925bdaddc4201f984': 18, //UNI
     '0xe41d2489571d322189246dafa5ebde1f4699f498': 0.65, //ZRX
     '0xc00e94cb662c3520282e6f5717214004a7f26888': 410, //COMP
-    '0x7Fc66500c84A76Ad7e9c93437bFc5Ac33E2DDaE9': 300
+    '0x7Fc66500c84A76Ad7e9c93437bFc5Ac33E2DDaE9': 300, //AAVE
+
+    '0x0bc529c00C6401aEF6D220BE8C6Ea1667F6Ad93e': 37013, //YFI
+    '0x0D8775F648430679A709E98d2b0Cb6250d2887EF': 0.793, //BAT
+    '0x4Fabb145d64652a948d72533023f6E7A623C7C53': 1, //BUSD
+    '0xF629cBd94d3791C9250152BD8dfBDF380E2a3B9c': 1.74, //ENJ
+    '0xdd974D5C2e2928deA5F71b9825b8b646686BD2oc00': 1.87, //KNC
+    '0x408e41876cCCDC0F92210600ef50372656052a38': 0.8882, //REN
+    '0xC011a73ee8576Fb46F5E1c5751cA3B9Fe0af2a6F': 13.52, //SNX
+    '0x57Ab1ec28D129707052df4dF418D58a2D46d5f51': 1, //sUSD
+    '0x0000000000085d4780B73119b644AE5ecd22b376': 1, //TUSD
+    '0x056Fd409E1d7A124BD7017459dFEa2F387b6d5Cd': 1, //GUSD
+    '0xba100000625a3754423978a60c9317c58a424e3D': 27.86, //BAL
+    '0x8798249c2E607446EfB7Ad49eC89dD1865Ff4272': 15.5, //xSUSHI
+    '0xD5147bc8e386d91Cc5DBE72099DAC6C9b99276F5': 84.56, //renFIL
+    '0x03ab458634910AaD20eF5f1C8ee96F1D6ac54919': 3.03, //RAI
+    '0xD46bA6D942050d489DBd938a2C909A5d5039A161': 1.0229, //AMPL
+    '0x8E870D67F660D95d5be530380D0eC0bd388289E1': 1, //USDP
+    '0x1494CA1F11D487c2bBe4543E90080AeBa4BA3C2b': 391.6695, //DPI
+    '0x853d955aCEf822Db058eb8505911ED77F175b99e': 1.01, //FRAX
 }
 const names = {
     '0x6b175474e89094c44da98b954eedeac495271d0f': 'DAI', //DAI
@@ -43,7 +80,26 @@ const names = {
     '0x1f9840a85d5af5bf1d1762f925bdaddc4201f984': 'UNI', //UNI
     '0xe41d2489571d322189246dafa5ebde1f4699f498': 'ZRX', //ZRX
     '0xc00e94cb662c3520282e6f5717214004a7f26888': 'COMP', //COMP
-    '0x7Fc66500c84A76Ad7e9c93437bFc5Ac33E2DDaE9': 'AAVE' //AAV
+    '0x7Fc66500c84A76Ad7e9c93437bFc5Ac33E2DDaE9': 'AAVE', //AAVE
+
+    '0x0bc529c00C6401aEF6D220BE8C6Ea1667F6Ad93e': 'YFI', //YFI
+    '0x0D8775F648430679A709E98d2b0Cb6250d2887EF': 'BAT', //BAT
+    '0x4Fabb145d64652a948d72533023f6E7A623C7C53': 'BUSD', //BUSD
+    '0xF629cBd94d3791C9250152BD8dfBDF380E2a3B9c': 'ENJ', //ENJ
+    '0xdd974D5C2e2928deA5F71b9825b8b646686BD2oc00': 'KNC', //KNC
+    '0x408e41876cCCDC0F92210600ef50372656052a38': 'REN', //REN
+    '0xC011a73ee8576Fb46F5E1c5751cA3B9Fe0af2a6F': 'SNX', //SNX
+    '0x57Ab1ec28D129707052df4dF418D58a2D46d5f51': 'sUSD', //sUSD
+    '0x0000000000085d4780B73119b644AE5ecd22b376': 'TUSD', //TUSD
+    '0x056Fd409E1d7A124BD7017459dFEa2F387b6d5Cd': 'GUSD', //GUSD
+    '0xba100000625a3754423978a60c9317c58a424e3D': 'BAL', //BAL
+    '0x8798249c2E607446EfB7Ad49eC89dD1865Ff4272': 'xSUSHI', //xSUSHI
+    '0xD5147bc8e386d91Cc5DBE72099DAC6C9b99276F5': 'renFIL', //renFIL
+    '0x03ab458634910AaD20eF5f1C8ee96F1D6ac54919': 'RAI', //RAI
+    '0xD46bA6D942050d489DBd938a2C909A5d5039A161': 'AMPL', //AMPL
+    '0x8E870D67F660D95d5be530380D0eC0bd388289E1': 'USDP', //USDP
+    '0x1494CA1F11D487c2bBe4543E90080AeBa4BA3C2b': 'DPI', //DPI
+    '0x853d955aCEf822Db058eb8505911ED77F175b99e': 'FRAX', //FRAX
 }
 //decimals
 const tokenDecimals = {
@@ -61,6 +117,24 @@ const tokenDecimals = {
     '0xe41d2489571d322189246dafa5ebde1f4699f498': 18, //ZRX
     '0xc00e94cb662c3520282e6f5717214004a7f26888': 18, //COMP
     '0x7Fc66500c84A76Ad7e9c93437bFc5Ac33E2DDaE9': 18, //AAVE
+
+    '0x0bc529c00C6401aEF6D220BE8C6Ea1667F6Ad93e': 18, //YFI
+    '0x0D8775F648430679A709E98d2b0Cb6250d2887EF': 18, //BAT
+    '0x4Fabb145d64652a948d72533023f6E7A623C7C53': 18, //BUSD
+    '0xF629cBd94d3791C9250152BD8dfBDF380E2a3B9c': 18, //ENJ
+    '0x408e41876cCCDC0F92210600ef50372656052a38': 18, //REN
+    '0xC011a73ee8576Fb46F5E1c5751cA3B9Fe0af2a6F': 18, //SNX
+    '0x57Ab1ec28D129707052df4dF418D58a2D46d5f51': 18, //sUSD
+    '0x0000000000085d4780B73119b644AE5ecd22b376': 18, //TUSD
+    '0x056Fd409E1d7A124BD7017459dFEa2F387b6d5Cd': 2, //GUSD
+    '0xba100000625a3754423978a60c9317c58a424e3D': 18, //BAL
+    '0x8798249c2E607446EfB7Ad49eC89dD1865Ff4272': 18, //xSUSHI
+    '0xD5147bc8e386d91Cc5DBE72099DAC6C9b99276F5': 18, //renFIL
+    '0x03ab458634910AaD20eF5f1C8ee96F1D6ac54919': 18, //RAI
+    '0xD46bA6D942050d489DBd938a2C909A5d5039A161': 9, //AMPL
+    '0x8E870D67F660D95d5be530380D0eC0bd388289E1': 18, //USDP
+    '0x1494CA1F11D487c2bBe4543E90080AeBa4BA3C2b': 18, //DPI
+    '0x853d955aCEf822Db058eb8505911ED77F175b99e': 18, //FRAX
 }
 
 const zeroAddress = "0x0000000000000000000000000000000000000000"
@@ -509,8 +583,12 @@ const ERC20_ABI = [
     }
 ]
 
+ADDRESS_PROVIDER_ADDRESS = '0xB53C1a33016B2DC2fF3653530bfF1848a515c8c5'
+ADDRESS_PROVIDER_ABI = [{"inputs":[{"internalType":"string","name":"marketId","type":"string"}],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"bytes32","name":"id","type":"bytes32"},{"indexed":true,"internalType":"address","name":"newAddress","type":"address"},{"indexed":false,"internalType":"bool","name":"hasProxy","type":"bool"}],"name":"AddressSet","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"newAddress","type":"address"}],"name":"ConfigurationAdminUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"newAddress","type":"address"}],"name":"EmergencyAdminUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"newAddress","type":"address"}],"name":"LendingPoolCollateralManagerUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"newAddress","type":"address"}],"name":"LendingPoolConfiguratorUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"newAddress","type":"address"}],"name":"LendingPoolUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"newAddress","type":"address"}],"name":"LendingRateOracleUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"string","name":"newMarketId","type":"string"}],"name":"MarketIdSet","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"previousOwner","type":"address"},{"indexed":true,"internalType":"address","name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"newAddress","type":"address"}],"name":"PriceOracleUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"bytes32","name":"id","type":"bytes32"},{"indexed":true,"internalType":"address","name":"newAddress","type":"address"}],"name":"ProxyCreated","type":"event"},{"inputs":[{"internalType":"bytes32","name":"id","type":"bytes32"}],"name":"getAddress","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getEmergencyAdmin","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getLendingPool","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getLendingPoolCollateralManager","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getLendingPoolConfigurator","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getLendingRateOracle","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getMarketId","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getPoolAdmin","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getPriceOracle","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"renounceOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"bytes32","name":"id","type":"bytes32"},{"internalType":"address","name":"newAddress","type":"address"}],"name":"setAddress","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"bytes32","name":"id","type":"bytes32"},{"internalType":"address","name":"implementationAddress","type":"address"}],"name":"setAddressAsProxy","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"emergencyAdmin","type":"address"}],"name":"setEmergencyAdmin","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"manager","type":"address"}],"name":"setLendingPoolCollateralManager","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"configurator","type":"address"}],"name":"setLendingPoolConfiguratorImpl","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"pool","type":"address"}],"name":"setLendingPoolImpl","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"lendingRateOracle","type":"address"}],"name":"setLendingRateOracle","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"string","name":"marketId","type":"string"}],"name":"setMarketId","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"admin","type":"address"}],"name":"setPoolAdmin","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"priceOracle","type":"address"}],"name":"setPriceOracle","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"}]
+
 module.exports = {
-    DAI, WETH, USDC, SAI, USDT, WBTC, LINK, MKR, CRV, MANA, UNI, ZRX, COMP, AAVE,
+    DAI, WETH, USDC, USDT, WBTC, LINK, MKR, CRV, MANA, UNI, ZRX, AAVE,
+    YFI, BAT, BUSD, ENJ, KNC, REN, SNX, sUSD, TUSD, GUSD, BAL, xSUSHI, renFIL, RAI, AMPL, USDP, DPI, FRAX,
     prices,
     names,
     tokenDecimals,
@@ -520,4 +598,5 @@ module.exports = {
     INCH_ROUTER_ADDRESS,
     ARBITRAGE_ADDRESS, ARBITRAGE_ABI,
     ERC20_ABI,
+    ADDRESS_PROVIDER_ADDRESS, ADDRESS_PROVIDER_ABI,
 }
